@@ -1,30 +1,42 @@
 import SwiftUI
 import SwiftData
 
-
 struct ContentView: View {
- //   @Environment(\.modelContext) var context
-//    @State var kaneImage: [Image] = [Image("kane1"), Image("kane2"),Image("kane3"), Image("kane4"), Image("kane5"), Image("kane6")]
+    @State var selectedTab = 0
+    
     var body: some View {
-        NavigationStack{
-            VStack {
-                Text("Matcher")
-                    .font(.headline)
-                Spacer()
-                
-                NavigationLink("Easy mode", destination: EasyView())
-                
-                
-                Spacer()
-                
-                NavigationLink("View your stats", destination: StatsView())
-                
-                
-               
-                
+        TabView(selection: $selectedTab) {
+            HomeTab()
+                .tag(0)
+                .tabItem {
+                    Label("Matching", systemImage: "square.grid.2x2")
+                }
+            
+            StatsView()
+                .tag(1)
+                .tabItem {
+                    Label("Stats", systemImage: "chart.bar")
+                }
+        }
+    }
+    
+    struct HomeTab: View {
+        var body: some View {
+            NavigationStack {
+                VStack {
+                    Text("Matcher")
+                        .font(.largeTitle)
+                        .fontWeight(.semibold)
+                        .padding(.top)
+                    Spacer()
+                    NavigationLink("Easy mode") {
+                        EasyView()
+                    }
+                    .padding()
+                    
+                    Spacer()
+                }
             }
         }
     }
 }
-
-

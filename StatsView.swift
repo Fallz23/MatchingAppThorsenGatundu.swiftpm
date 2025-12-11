@@ -11,9 +11,14 @@ import SwiftData
 
 struct StatsView: View {
     var body: some View {
-        Text("Stats")
-            .font(.headline)
-        Spacer()
+        VStack {
+            Text("Stats")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+                .padding(.top)
+            Spacer()
+        }
     }
 }
+
 
