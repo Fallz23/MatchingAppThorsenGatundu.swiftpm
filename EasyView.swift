@@ -16,21 +16,26 @@ struct EasyView: View {
     @State var selectedPic2: CardClass? = nil
     var body: some View {
         VStack {
-            ForEach(0..<pictures.count/2, id: \.self) { row in
+            ForEach(0..<pictures.count/3+1, id: \.self) { row in
                 HStack {
                     ForEach(0..<3) { column in
                         let index = row * 3 + column
                         if index < pictures.count {
                             Button{
-                                if selectedPic != nil{
+                                if selectedPic == nil{
                                     selectedPic = pictures[index]
-                                } else if selectedPic2 != nil{
+                                } else if selectedPic2 == nil{
                                     selectedPic2 = pictures[index]
                                 }
                                 
-//                                if selectedPic == selectedPic2 {
-//                                    
-//                                }
+                                if selectedPic == selectedPic2 {
+                                    pictures.removeAll() { pic in
+                                        pic.id == selectedPic!.id || pic.id == selectedPic2!.id
+                                        
+                                    }
+                                    selectedPic = nil
+                                    selectedPic2 = nil
+                                }
                             } label: {  pictures[index].picture
                                 
                                     .resizable()
@@ -48,14 +53,39 @@ struct EasyView: View {
             
             
             
-            ForEach(0..<pictures.count/2, id: \.self) { row in
+            ForEach(0..<pictures.count/3+1, id: \.self) { row in
                 HStack {
                     ForEach(0..<3) { column in
                         let index = row * 3 + column
                         if index < pictures.count {
-                            pictures[index].picture
-                                .resizable()
-                                .frame(width: 100, height: 100)
+                            Button{
+                                if selectedPic == nil{
+                                    selectedPic = pictures[index]
+                                } else if selectedPic2 == nil{
+                                    selectedPic2 = pictures[index]
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    if selectedPic == selectedPic2 {
+                                        pictures.removeAll() { pic in
+                                            pic.id == selectedPic!.id || pic.id == selectedPic2!.id
+                                            
+                                        }
+                                        
+                                        selectedPic = nil
+                                        selectedPic2 = nil
+                                        
+                                    }
+                                }
+                                
+                                                                
+                            } label: {  pictures[index].picture
+                                
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                            }
                         } else {
                             Spacer()
                         }
@@ -67,5 +97,6 @@ struct EasyView: View {
             Spacer()
             
         }
+        .toolbar(.hidden, for: .tabBar)
     }
 }
