@@ -6,10 +6,15 @@
 //
 
 import Foundation
-
+import SwiftUI
+import SwiftData
 
 class Stats{
+    @State var win = 0
     
+    init(win: Int = 0) {
+        self.win = win
+    }
     
     
 }

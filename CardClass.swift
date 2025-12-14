@@ -8,7 +8,12 @@
 import Foundation
 import SwiftUI
 
-class CardClass: Identifiable{
+class CardClass: Identifiable, Equatable{
+    static func == (lhs: CardClass, rhs: CardClass) -> Bool {
+        lhs.id == rhs.id
+
+    }
+    
     let id = UUID()
    @State var picture: Image
     @State var back = Image("backOfPicture")
