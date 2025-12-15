@@ -18,6 +18,11 @@ struct EasyView: View {
     @State var selectedPic2: CardClass? = nil
     var body: some View {
         NavigationStack{
+            Text("Easy mode")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+                .padding(.top)
+            Spacer()
             VStack {
                 ForEach(0..<pictures.count/3+1, id: \.self) { row in
                     HStack {
@@ -48,14 +53,13 @@ struct EasyView: View {
                                         .frame(width: 100, height: 100)
                                 }
                             } else {
-                                Spacer()
+                                Color.clear
+                                    .frame(width: 100, height: 100)
                             }
                         }
                     }
                 }
                 
-                Text("Easy mode")
-                Spacer()
                 
                 
                 
@@ -69,10 +73,6 @@ struct EasyView: View {
                                         selectedPic = pictures[index]
                                     } else if selectedPic2 == nil{
                                         selectedPic2 = pictures[index]
-                                        
-                                        
-                                        
-                                        
                                         
                                         if selectedPic == selectedPic2 {
                                             pictures.removeAll() { pic in
@@ -95,20 +95,17 @@ struct EasyView: View {
                                         .frame(width: 100, height: 100)
                                 }
                             } else {
-                                Spacer()
+                                Color.clear
+                                    .frame(width: 100, height: 100)
                             }
                         }
                     }
                 }
-                
-                Text("Easy mode")
-                Spacer()
-                
             }
-            
-            .toolbar(.hidden, for: .tabBar)
-            .navigationDestination(isPresented: $win){
-                WinView()
+            Spacer()
+                .toolbar(.hidden, for: .tabBar)
+                .navigationDestination(isPresented: $win) {
+                    WinView()
             }
         }
     }
