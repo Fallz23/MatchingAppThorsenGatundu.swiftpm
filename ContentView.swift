@@ -22,7 +22,8 @@ struct ContentView: View {
     
     struct HomeTab: View {
         @State var ease = false
-        @State var pictures: [CardClass] = [CardClass(picture: Image("kane1")),CardClass(picture: Image("kane2")), CardClass(picture: Image("kane3")), CardClass(picture: Image("kane4")), CardClass(picture: Image("kane5")), CardClass(picture: Image("kane6"))]
+        @State var pictures: [CardClass] = []
+        
         var body: some View {
             NavigationStack {
                 VStack {
@@ -30,24 +31,26 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .fontWeight(.semibold)
                         .padding(.top)
+                    
                     Spacer()
                     
-                    
-//                    NavigationLink("Easy mode") {
-//                        EasyView(pictures: $pictures)
-//                    }
-//                    .padding()
-                    Button("Easy mode"){
-                        pictures = [CardClass(picture: Image("kane1")),CardClass(picture: Image("kane2")), CardClass(picture: Image("kane3")), CardClass(picture: Image("kane4")), CardClass(picture: Image("kane5")), CardClass(picture: Image("kane6"))]
-                            .shuffled()
+                    Button("Easy mode") {
+                        pictures = [
+                            CardClass(name: "kane1"), CardClass(name: "kane1"),
+                            CardClass(name: "kane2"), CardClass(name: "kane2"),
+                            CardClass(name: "kane3"), CardClass(name: "kane3"),
+                            CardClass(name: "kane4"), CardClass(name: "kane4"),
+                            CardClass(name: "kane5"), CardClass(name: "kane5"),
+                            CardClass(name: "kane6"), CardClass(name: "kane6")
+                        ].shuffled()
+                        
                         ease = true
                     }
                     .padding()
                     
-                    
                     Spacer()
                 }
-                .navigationDestination(isPresented: $ease){
+                .navigationDestination(isPresented: $ease) {
                     EasyView(pictures: $pictures)
                 }
             }

@@ -5,22 +5,19 @@
 //  Created by JOSHUA GATUNDU on 12/10/25.
 //
 
-import Foundation
 import SwiftUI
 
-class CardClass: Identifiable, Equatable{
-    static func == (lhs: CardClass, rhs: CardClass) -> Bool {
-        lhs.id == rhs.id
+struct CardClass: Identifiable {
 
-    }
-    
     let id = UUID()
-   @State var picture: Image
-    @State var back = Image("backOfPicture")
-    
-    init(picture: Image) {
-        self.picture = picture
-        self.back = back
+    var name: String
+    var picture: Image
+    var back: Image = Image("backofpicture")
+    var isFaceUp: Bool = false
+
+    init(name: String) {
+        self.name = name
+        self.picture = Image(name)
     }
-    
 }
+
