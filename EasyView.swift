@@ -8,109 +8,130 @@
 import SwiftUI
 import SwiftData
 
-
-
 struct EasyView: View {
-    
+
     @State var win = false
     @Binding var pictures: [CardClass]
-    @State var selectedPic: CardClass? = nil
-    @State var selectedPic2: CardClass? = nil
+
+    @State var selectedIndex1: Int? = nil
+    @State var selectedIndex2: Int? = nil
+
+    @State var waiting = false
+
     var body: some View {
-        NavigationStack{
-            VStack {
-                ForEach(0..<pictures.count/3+1, id: \.self) { row in
-                    HStack {
-                        ForEach(0..<3) { column in
+        NavigationStack {
+            Text("Easy mode")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+                .padding(.top)
+
+            Spacer()
+
+            VStack(spacing: 10) {
+                let rows = (pictures.count + 2) / 3
+
+                ForEach(0..<rows, id: \.self) { row in
+                    HStack(spacing: 10) {
+                        ForEach(0..<3, id: \.self) { column in
                             let index = row * 3 + column
+
                             if index < pictures.count {
-                                Button{
-                                    if selectedPic == nil{
-                                        selectedPic = pictures[index]
-                                    } else if selectedPic2 == nil{
-                                        selectedPic2 = pictures[index]
+                                Button {
+                                    cardTapped(index)
+                                } label: {
+                                    if pictures[index].isFaceUp {
+                                        pictures[index].picture
+                                            .resizable()
+                                            .frame(width: 100, height: 100)
+                                    } else {
+                                        pictures[index].back
+                                            .resizable()
+                                            .frame(width: 100, height: 100)
                                     }
-                                    
-                                    if selectedPic == selectedPic2 {
-                                        pictures.removeAll() { pic in
-                                            pic.id == selectedPic!.id || pic.id == selectedPic2!.id
-                                            
-                                        }
-                                        selectedPic = nil
-                                        selectedPic2 = nil
-                                        if pictures.count == 0{
-                                            win = true
-                                        }
-                                    }
-                                } label: {  pictures[index].picture
-                                    
-                                        .resizable()
-                                        .frame(width: 100, height: 100)
                                 }
                             } else {
-                                Spacer()
+                                Color.clear
+                                    .frame(width: 100, height: 100)
                             }
                         }
                     }
                 }
+            }
+
+            Spacer()
+                .toolbar(.hidden, for: .tabBar)
+                .navigationDestination(isPresented: $win) {
+                    WinView()
+                }
+        }
+    }
+
+    func cardTapped(_ index: Int) {
+
+        if waiting {
+            return
+        }
+        if pictures[index].isFaceUp {
+            return
+        }
+        if selectedIndex1 != nil && selectedIndex1 == index {
+            return
+        }
+
+        pictures[index].isFaceUp = true
+
+        if selectedIndex1 == nil {
+            selectedIndex1 = index
+        }else if selectedIndex2 == nil{
+            selectedIndex2 = index
+            checkMatch()
+        }
+    }
+
+    func checkMatch() {
+
+        if selectedIndex1 == nil || selectedIndex2 == nil {
+            return
+        }
+
+        let i1 = selectedIndex1!
+        let i2 = selectedIndex2!
+
+        if pictures[i1].name == pictures[i2].name {
+            
+            waiting = true
+            
+            let id1 = pictures[i1].id
+            let id2 = pictures[i2].id
+            
+            //this waits 1 second then runs the code inside
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 
-                Text("Easy mode")
-                Spacer()
-                
-                
-                
-                ForEach(0..<pictures.count/3+1, id: \.self) { row in
-                    HStack {
-                        ForEach(0..<3) { column in
-                            let index = row * 3 + column
-                            if index < pictures.count {
-                                Button{
-                                    if selectedPic == nil{
-                                        selectedPic = pictures[index]
-                                    } else if selectedPic2 == nil{
-                                        selectedPic2 = pictures[index]
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        if selectedPic == selectedPic2 {
-                                            pictures.removeAll() { pic in
-                                                pic.id == selectedPic!.id || pic.id == selectedPic2!.id
-                                                
-                                            }
-                                            
-                                            selectedPic = nil
-                                            selectedPic2 = nil
-                                            if pictures.count == 0{
-                                                win = true
-                                            }
-                                        }
-                                    }
-                                    
-                                    
-                                } label: {  pictures[index].picture
-                                    
-                                        .resizable()
-                                        .frame(width: 100, height: 100)
-                                }
-                            } else {
-                                Spacer()
-                            }
-                        }
-                    }
+                pictures.removeAll { card in
+                    card.id == id1 || card.id == id2
                 }
                 
-                Text("Easy mode")
-                Spacer()
+                selectedIndex1 = nil
+                selectedIndex2 = nil
+                waiting = false
                 
+                if pictures.count == 0 {
+                    win = true
+                }
             }
             
-            .toolbar(.hidden, for: .tabBar)
-            .navigationDestination(isPresented: $win){
-                WinView()
+        }else{
+            waiting = true
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+
+                pictures[i1].isFaceUp = false
+                pictures[i2].isFaceUp = false
+
+                selectedIndex1 = nil
+                selectedIndex2 = nil
+                waiting = false
             }
         }
     }
-        
 }
