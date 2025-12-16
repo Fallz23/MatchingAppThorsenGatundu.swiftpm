@@ -9,12 +9,16 @@ import Foundation
 import SwiftUI
 import SwiftData
 
-class Stats{
-    @State var win = 0
+@Model
+
+class Stats {
     
-    init(win: Int = 0) {
+    var win: Int
+    
+    init(win: Int) {
         self.win = win
     }
+    
     
     
 }

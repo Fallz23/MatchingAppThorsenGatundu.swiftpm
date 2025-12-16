@@ -9,10 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct EasyView: View {
-
-    @State var win = false
+    
+    @Environment(\.modelContext) var context
+    @State var win: Bool = false
     @Binding var pictures: [CardClass]
-
+    @Query var wins: Int = 0
     @State var selectedIndex1: Int? = nil
     @State var selectedIndex2: Int? = nil
 
@@ -117,6 +118,9 @@ struct EasyView: View {
                 
                 if pictures.count == 0 {
                     win = true
+                  //  let stat = wins = wins + 1
+                //    context.insert(stat)
+                  //  try? context.save()
                 }
             }
             

@@ -2,6 +2,8 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) var context
+    
     @State var selectedTab = 0
     
     var body: some View {
