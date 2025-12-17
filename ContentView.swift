@@ -25,7 +25,8 @@ struct ContentView: View {
     struct HomeTab: View {
         @State var ease = false
         @State var pictures: [CardClass] = []
-        
+        @State var fade = true
+
         var body: some View {
             NavigationStack {
                 VStack {
@@ -33,10 +34,14 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .fontWeight(.semibold)
                         .padding(.top)
-                    
+
                     Spacer()
-                    
+
                     Button("Easy mode") {
+                        withAnimation(.easeOut(duration: 0.6)) {
+                            fade = false
+                        }
+
                         pictures = [
                             CardClass(name: "kane1"), CardClass(name: "kane1"),
                             CardClass(name: "kane2"), CardClass(name: "kane2"),
@@ -45,12 +50,21 @@ struct ContentView: View {
                             CardClass(name: "kane5"), CardClass(name: "kane5"),
                             CardClass(name: "kane6"), CardClass(name: "kane6")
                         ].shuffled()
-                        
+
                         ease = true
                     }
                     .padding()
-                    
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(.blue)
+                    .opacity(fade ? 1 : 0)
+
                     Spacer()
+                }
+                .onAppear {
+                    withAnimation(.easeIn(duration: 0.6)) {
+                        fade = true
+                    }
                 }
                 .navigationDestination(isPresented: $ease) {
                     EasyView(pictures: $pictures)
@@ -58,4 +72,6 @@ struct ContentView: View {
             }
         }
     }
-}
+
+    }
+
