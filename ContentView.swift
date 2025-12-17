@@ -3,7 +3,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) var context
-    
+    @AppStorage("wins") private var wins: Int = 0
     @State var selectedTab = 0
     
     var body: some View {

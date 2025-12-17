@@ -13,7 +13,7 @@ struct EasyView: View {
     @Environment(\.modelContext) var context
     @State var win: Bool = false
     @Binding var pictures: [CardClass]
-    @Query var wins: Int = 0
+    @AppStorage("wins") private var wins: Int = 0
     @State var selectedIndex1: Int? = nil
     @State var selectedIndex2: Int? = nil
 
@@ -25,7 +25,8 @@ struct EasyView: View {
                 .font(.largeTitle)
                 .fontWeight(.semibold)
                 .padding(.top)
-
+            Text("\(wins)")
+            
             Spacer()
 
             VStack(spacing: 10) {
@@ -118,9 +119,7 @@ struct EasyView: View {
                 
                 if pictures.count == 0 {
                     win = true
-                  //  let stat = wins = wins + 1
-                //    context.insert(stat)
-                  //  try? context.save()
+                   wins+=1
                 }
             }
             
