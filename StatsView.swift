@@ -20,7 +20,7 @@ struct StatsView: View {
                 .padding(.top)
             
             Spacer()
-            Text("You have \(wins)")
+            Text("You have \(wins) wins")
 
             Spacer()
             
